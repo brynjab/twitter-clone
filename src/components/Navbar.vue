@@ -29,9 +29,9 @@
             <span class="material-symbols-outlined">article</span>
             <div class="text"><p>Lists</p></div>
           </div>
-          <div class="nav-item profile">
+          <div class="nav-item profile" @click="toProfile()">
             <span class="material-symbols-outlined">person</span>
-            <div class="text"><p>Profile</p></div>
+            <div class="text"><p >Profile</p></div>
           </div>
           <div class="nav-item more">
             <span class="material-symbols-outlined">pending</span>
@@ -46,11 +46,20 @@
 
 <script>
 export default {
-
+    name: 'Navbar',
+    methods: {
+      toProfile() {
+        this.$router.push("/profile")
+      }
+    }
 }
 </script>
 
 <style scoped>
+  .navbar{
+    background-color: white !important;
+  }
+
   @media(min-width:576px) {
     nav.navbar {
       position: fixed;
@@ -61,7 +70,6 @@ export default {
       overflow-y: auto;
       overflow-x: hidden;
       display: block;
-      border-right: 1px solid #cecece;
     }
     nav.navbar>.container-fluid {
       flex-direction: column;
