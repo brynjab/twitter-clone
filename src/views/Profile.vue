@@ -1,30 +1,36 @@
 <template>
   <div>
-    <div class="container">
-      <div class="row">
-        <div class="col-2">
-          <img :src="user.profilePhotoURL" alt="" class="profile-image">
+    <ProfileBanner/>
+    <div v-for="tweet in user.tweets.slice().reverse()" v-bind:key="tweet.id" class="tweet-post">
+      <div>
+        <img :src="user.profilePhotoURL" alt="" class="profile-image">
+      </div>
+      <div class="tweet-content">
+        <span class="user-name">{{user.userName}}</span>
+        <span>@{{user.twitterHandle}}</span><br>
+        <span>{{tweet.text}}</span>
+        <div class="tweet-image">
+          <img :src="tweet.image" alt="">
         </div>
-        <div class="col-10">
-            <input type="text" placeholder="What's happening?" class="tweet-input">
+        <div class="tweet-interactions">
+          <div>
+            <p class="material-symbols-outlined">mode_comment</p>
+            <p class="numbers">{{tweet.replies.length}}</p>
+          </div>
+          <div>
+            <p class="material-symbols-outlined">autorenew</p>
+            <p class="numbers">{{tweet.retweets | abbr }}</p>
+          </div>
+          <div>
+            <p class="material-symbols-outlined">favorite</p>
+            <p class="numbers">{{tweet.likes | abbr }}</p>
+          </div>
+          <div>
+            <p class="material-symbols-outlined">file_upload</p>
+          </div>
         </div>
       </div>
     </div>
-    <div v-for="tweet in user.tweets" v-bind:key="tweet.id">
-      
-    {{tweet}}<br>
-      <div>
-        {{tweet.text}}
-      </div>
-      <div>
-          <img :src="tweet.image" alt=""  class="tweet-image">
-      </div>
-      
-
-    </div>
-
-
-
   </div>
 </template>
 
@@ -33,23 +39,33 @@
 
 <script>
 import axios from 'axios'
+import ProfileBanner from '../components/ProfileBanner.vue'
 
 export default {
   name: 'Home',
   components: {
+    ProfileBanner
   },
   data: () => {
     return{
       user: []
     }
-    
   },
-  methods: {
-
+  filters: {
+    abbr: function(num) {
+      if (String(num).length < 4) {
+        return num;
+      } else if(String(num).length >= 4 && String(num).length < 7) {
+        return (num/1000).toFixed(1) + 'K';
+      } else {
+        return (num/1000000).toFixed(1) + 'M';
+      }
+    }
   }, 
   mounted() {
-    axios.get('https://localhost:7109/api/twitter/f1').then(response => {
+    axios.get('https://localhost:7109/api/users/f1').then(response => {
       this.user = response.data
+      console.log(response.data)
     })
   }
 }
@@ -57,16 +73,48 @@ export default {
 
 <style scoped>
 .profile-image {
-  width: 60px;
+  min-width: 60px;
   height: 60px;
   object-fit: contain;
   border-radius: 50%;
+  margin-right: 10px;
+}
+.tweet-post {
+  padding: 20px;
+  display: flex;
 }
 .tweet-input {
-    margin-top: 10px;
-    border: 0px;
+  margin-top: 10px;
+  border: 0px;
 }
 .tweet-image {
-    max-width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.tweet-image, img {
+  max-width: 100%;
+  border-radius: 15px;
+}
+.user-name {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.material-symbols-outlined {
+  margin-right: 10px;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 48
+}
+.tweet-interactions{
+  display: flex;
+  justify-content: space-between;
+}
+.numbers {
+  float: right;
+}
+.tweet-content {
+  width: 100%;
 }
 </style>

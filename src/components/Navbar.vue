@@ -4,7 +4,7 @@
           <div class="twitter-icon">
             <font-awesome-icon icon="fa-brands fa-twitter" />
           </div>
-          <div class="nav-item home">
+          <div class="nav-item home" @click="toHome()">
             <span class="material-symbols-outlined">home</span>
             <div class="text"><p>Home</p></div>
           </div>
@@ -50,6 +50,9 @@ export default {
     methods: {
       toProfile() {
         this.$router.push("/profile")
+      },
+      toHome() {
+        this.$router.push("/")
       }
     }
 }
@@ -97,13 +100,10 @@ export default {
     padding-left: 10px;
     }
   }
-
-
   .twitter-icon {
     color: #1D9BF0;
     font-size: 30px;
   }
-
   .material-symbols-outlined {
     font-variation-settings:
       'FILL'0,
@@ -111,7 +111,6 @@ export default {
       'GRAD'0,
       'opsz'48
   }
-
   .btn {
     background-color: #1D9BF0;
     border-radius: 20px;
@@ -121,11 +120,12 @@ export default {
   .nav-item{
     margin-top: 20px;
   }
-
+  .nav-item:hover {
+    cursor: pointer;
+  }
   p {
     text-align: left;
   }
-
   .text {
     width: 100px;
     padding-left: 10px;
