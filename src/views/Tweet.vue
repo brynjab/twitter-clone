@@ -29,8 +29,9 @@
             <p class="material-symbols-outlined">autorenew</p>
             <p class="numbers">{{tweet.retweets | abbr }}</p>
           </div>
-          <div>
-            <p class="material-symbols-outlined">favorite</p>
+          <div @click="likeTweet(tweet.id, tweet.likes)">
+            <i v-if="likes.includes(tweet.id)" class="bi bi-heart-fill"></i>
+            <i v-else class="bi bi-heart"></i>
             <p class="numbers">{{tweet.likes | abbr }}</p>
           </div>
           <div>
@@ -81,9 +82,13 @@
             <p class="material-symbols-outlined">autorenew</p>
             <p class="numbers">{{reply.retweets | abbr }}</p>
           </div>
-          <div>
-            <p class="material-symbols-outlined">favorite</p>
-            <p class="numbers">{{reply.likes | abbr }}</p>
+          <div v-if="tweet.isLiked == false" @click="likeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart"></i>
+            <p class="numbers">{{tweet.likes | abbr }}</p>
+          </div>
+          <div v-else @click="dislikeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart-fill"></i>
+            <p class="numbers">{{tweet.likes | abbr }}</p>
           </div>
           <div>
             <p class="material-symbols-outlined">file_upload</p>
@@ -105,7 +110,7 @@ export default {
       tweet: [],
       replyText: undefined,
       replyImage: undefined,
-      showInput: false,
+      showInput: false
     }
   },
   computed: {
@@ -129,6 +134,12 @@ export default {
     },
     toProfile(){
       this.$router.push("/profile")
+    },
+    likeTweet(tweetId, counter){
+      axios.put(`https://localhost:7109/api/twitter/${tweetId}`, { likes: parseInt(counter) + 1, isLiked: true }).then( () => this.fetchTweet())
+    },
+    dislikeTweet(tweetId, counter){
+      axios.put(`https://localhost:7109/api/twitter/${tweetId}`, {likes: parseInt(counter) - 1, isLiked: false }).then( () => this.fetchTweet())
     }
   },
   mounted() {
@@ -214,6 +225,9 @@ export default {
 .tweet-content {
   width: 100%;
   white-space: pre-line;
+}
+.tweet-content i {
+  margin-right: 10px;
 }
 .tweet-interactions{
   margin-top: 10px;

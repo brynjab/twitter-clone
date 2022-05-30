@@ -6,7 +6,7 @@
     <div>
           <div class="input-box">
             <input type="text" placeholder="What's happening?" class="tweet-input" v-model="tweetText">
-            
+            <button class="btn btn-primary" @click="addTweet()">Tweet</button>
           </div>
           <div>
             <span class="material-symbols-outlined" @click="showInput = !showInput">image</span>
@@ -19,10 +19,6 @@
           <div v-if="showInput">
               <input type="text" placeholder="image link" v-model="tweetImage" class="image-input">
           </div>
-    </div>
-    <div>
-
-            <button class="btn btn-primary" @click="addTweet()">Tweet</button>
     </div>
   </div>
 </template>

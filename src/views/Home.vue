@@ -43,8 +43,12 @@
             <p class="material-symbols-outlined">autorenew</p>
             <p class="numbers">{{tweet.retweets | abbr }}</p>
           </div>
-          <div @click="likeTweet(tweet.id, tweet.likes)">
-            <p class="material-symbols-outlined">favorite</p>
+          <div v-if="tweet.isLiked == false" @click="likeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart"></i>
+            <p class="numbers">{{tweet.likes | abbr }}</p>
+          </div>
+          <div v-else @click="dislikeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart-fill"></i>
             <p class="numbers">{{tweet.likes | abbr }}</p>
           </div>
           <div>
@@ -73,7 +77,8 @@ export default {
       tweetImage: undefined,
       tweetText: undefined,
       showInput: false,
-      tweets: []
+      tweets: [],
+      likes: []
     }
   },
   methods: {
@@ -101,7 +106,10 @@ export default {
       this.$router.push(`/tweet/${id}`)
     },
     likeTweet(tweetId, counter){
-      axios.put(`https://localhost:7109/api/twitter/${tweetId}`, {likes: parseInt(counter) + 1}).then( () => this.fetchTweet())
+      axios.put(`https://localhost:7109/api/twitter/${tweetId}`, { likes: parseInt(counter) + 1, isLiked: true }).then( () => this.fetchTweet())
+    },
+    dislikeTweet(tweetId, counter){
+      axios.put(`https://localhost:7109/api/twitter/${tweetId}`, {likes: parseInt(counter) - 1, isLiked: false }).then( () => this.fetchTweet())
     }
   },  
   filters: {
@@ -194,6 +202,9 @@ export default {
 .tweet-content {
   width: 100%;
   white-space: pre-line;
+}
+.tweet-content i {
+  margin-right: 10px;
 }
 .tweet-interactions{
   display: flex;
