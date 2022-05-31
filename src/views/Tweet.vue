@@ -8,7 +8,7 @@
         </div>
       </router-link>
     </div>
-    <div class="tweet-post">
+    <div class="tweet-post" v-if="tweet.user">
       <div>
         <img :src="tweet.user.profilePhotoURL" alt="" class="profile-image">
       </div>
@@ -112,11 +112,6 @@ export default {
       showInput: false
     }
   },
-  computed: {
-    tweetId(){
-      return parseInt(this.$route.params.id)  
-    }
-  },
   methods: {
     fetchTweet(){
       axios.get(`https://localhost:7109/api/twitter/${this.$route.params.id}`).then(response => {
@@ -142,10 +137,10 @@ export default {
     }
   },
   mounted() {
-    this.fetchTweet(),
     axios.get('https://localhost:7109/api/users/f1').then(response => {
       this.user = response.data
-    }).catch(error => console.log(error))
+    }).catch(error => console.log(error)),
+    this.fetchTweet()
   },
   filters: {
     abbr: function(num) {
@@ -199,7 +194,7 @@ export default {
 .reply-button {
   background-color: #1D9BF0;
   margin-top: 10px;
-  margin-right: 20px;
+  margin-right: 25px;
   border-radius: 20px;
   padding-right: 30px;
   padding-left: 30px;

@@ -75,8 +75,7 @@ export default {
       tweetImage: undefined,
       tweetText: undefined,
       showInput: false,
-      tweets: [],
-      likes: []
+      tweets: []
     }
   },
   methods: {
@@ -166,7 +165,7 @@ export default {
 .tweet-button {
   background-color: #1D9BF0;
   margin-top: 10px;
-  margin-right: 20px;
+  margin-right: 25px;
   border-radius: 20px;
   padding-right: 30px;
   padding-left: 30px;
