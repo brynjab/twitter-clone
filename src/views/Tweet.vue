@@ -29,9 +29,12 @@
             <p class="material-symbols-outlined">autorenew</p>
             <p class="numbers">{{tweet.retweets | abbr }}</p>
           </div>
-          <div @click="likeTweet(tweet.id, tweet.likes)">
-            <i v-if="likes.includes(tweet.id)" class="bi bi-heart-fill"></i>
-            <i v-else class="bi bi-heart"></i>
+          <div v-if="tweet.isLiked == false" @click="likeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart"></i>
+            <p class="numbers">{{tweet.likes | abbr }}</p>
+          </div>
+          <div v-else @click="dislikeTweet(tweet.id, tweet.likes)">
+            <i class="bi bi-heart-fill"></i>
             <p class="numbers">{{tweet.likes | abbr }}</p>
           </div>
           <div>
@@ -40,15 +43,13 @@
         </div>
       </div>
     </div>
-    
     <div class="reply-box">
-      <div>
-        <img :src="user.profilePhotoURL" alt="" class="profile-image" @click="toProfile()">
-      </div>
-      <div>
-        <div class="input-box">
-          <input type="text" placeholder="Tweet your reply" class="tweet-input" v-model="replyText">
-          <button class="btn btn-primary" @click="addReply()">Reply</button>
+        <div class="input-group mt-2 mb-2">
+          <img :src="user.profilePhotoURL" alt="" class="profile-image" @click="toProfile()">
+          <input type="text" class="form-control tweet-input"  placeholder="Tweet your reply" v-model="replyText">
+          <span class="input-group-btn">
+            <button class="btn btn-primary reply-button" type="button" @click="addReply()">Reply</button>
+          </span>
         </div>
         <div>
           <span class="material-symbols-outlined blue" @click="showInput = !showInput">image</span>
@@ -58,9 +59,7 @@
         <div v-if="showInput">
           <input type="text" placeholder="image link" v-model="replyImage" class="image-input">
         </div>
-      </div>
     </div>
-
     <div v-for="reply in tweet.replies" v-bind:key="reply.id" >
       <div class="tweet-post">
         <div>
@@ -84,11 +83,11 @@
           </div>
           <div v-if="tweet.isLiked == false" @click="likeTweet(tweet.id, tweet.likes)">
             <i class="bi bi-heart"></i>
-            <p class="numbers">{{tweet.likes | abbr }}</p>
+            <p class="numbers">{{reply.likes | abbr }}</p>
           </div>
           <div v-else @click="dislikeTweet(tweet.id, tweet.likes)">
             <i class="bi bi-heart-fill"></i>
-            <p class="numbers">{{tweet.likes | abbr }}</p>
+            <p class="numbers">{{reply.likes | abbr }}</p>
           </div>
           <div>
             <p class="material-symbols-outlined">file_upload</p>
@@ -170,9 +169,10 @@ export default {
   border-radius: 50%;
   margin-right: 10px;
 }
+.profile-image:hover {
+  cursor: pointer;
+}
 .reply-box{
-    margin-top: 10px;
-    display: flex;
     padding-left: 20px;
 }
 .tweet-post {
@@ -196,8 +196,10 @@ export default {
 .image-input:focus {
     outline: none;
 }
-.btn-primary {
+.reply-button {
   background-color: #1D9BF0;
+  margin-top: 10px;
+  margin-right: 20px;
   border-radius: 20px;
   padding-right: 30px;
   padding-left: 30px;

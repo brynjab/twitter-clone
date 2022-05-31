@@ -1,25 +1,23 @@
 <template>
   <div class="home">
     <div class="tweet-box">
-      <div>
+      <div class="input-group mt-2 mb-2">
         <img :src="user.profilePhotoURL" alt="" class="profile-image" @click="toProfile()">
+        <input type="text" class="form-control tweet-input"  placeholder="What's happening?" v-model="tweetText">
+        <span class="input-group-btn">
+          <button class="btn btn-primary tweet-button" type="button" @click="addTweet()">Tweet</button>
+        </span>
       </div>
       <div>
-        <div class="input-box">
-          <input type="text" placeholder="What's happening?" class="tweet-input" v-model="tweetText">
-          <button class="btn btn-primary" @click="addTweet()">Tweet</button>
-        </div>
-        <div>
-          <span class="material-symbols-outlined" @click="showInput = !showInput">image</span>
-          <span class="material-symbols-outlined">gif_box</span>
-          <span class="material-symbols-outlined">bar_chart</span>
-          <span class="material-symbols-outlined">sentiment_satisfied</span>
-          <span class="material-symbols-outlined">calendar_month </span>
-          <span class="material-symbols-outlined">pin_drop</span>
-        </div>
-        <div v-if="showInput">
-          <input type="text" placeholder="image link" v-model="tweetImage" class="image-input">
-        </div>
+        <span class="material-symbols-outlined" @click="showInput = !showInput">image</span>
+        <span class="material-symbols-outlined">gif_box</span>
+        <span class="material-symbols-outlined">bar_chart</span>
+        <span class="material-symbols-outlined">sentiment_satisfied</span>
+        <span class="material-symbols-outlined">calendar_month </span>
+        <span class="material-symbols-outlined">pin_drop</span>
+      </div>
+      <div v-if="showInput">
+        <input type="text" placeholder="image link" v-model="tweetImage" class="image-input">
       </div>
     </div>
     <div v-for="tweet in tweets.slice().reverse()" v-bind:key="tweet.id"  class="tweet-post">
@@ -144,7 +142,6 @@ export default {
   cursor: pointer;
 }
 .tweet-box{
-    display: flex;
     padding-left: 20px;
     border: solid 1px #e5e5e5;
 }
@@ -154,7 +151,6 @@ export default {
   border: solid 1px #e5e5e5;
 }
 .tweet-input {
-  margin-top: 10px;
   border: 0px;
 }
 .tweet-input:focus {
@@ -167,8 +163,10 @@ export default {
 .image-input:focus {
     outline: none;
 }
-.btn-primary {
+.tweet-button {
   background-color: #1D9BF0;
+  margin-top: 10px;
+  margin-right: 20px;
   border-radius: 20px;
   padding-right: 30px;
   padding-left: 30px;
